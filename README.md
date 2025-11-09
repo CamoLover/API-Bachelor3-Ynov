@@ -40,11 +40,24 @@ API-Bachelor3-Ynov/
 
 ### Serveur API (PHP)
 
-Le serveur API expose les routes suivantes :
-- `GET` - Récupération de données
-- `POST` - Création de ressources
-- `PUT` - Mise à jour de ressources
-- `DELETE` - Suppression de ressources
+Le serveur API utilise SQLite comme base de données et expose les routes suivantes :
+
+#### Routes générales
+- `GET /health` - Statut de l'API
+- `GET /` - Page d'accueil de l'API
+
+#### Routes CRUD pour les posts Sacha
+- `GET /sacha` - Récupération de tous les posts
+- `POST /sacha/create` - Création d'un nouveau post
+- `GET /sacha/{id}` - Récupération d'un post spécifique
+- `PUT /sacha/update/{id}` - Mise à jour d'un post
+- `DELETE /sacha/delete/{id}` - Suppression d'un post
+
+**Fonctionnalités :**
+- Base de données SQLite automatiquement créée
+- Headers CORS configurés pour le développement
+- Architecture MVC avec controllers et services
+- Mode maintenance configurable
 
 ### Client (Next.js)
 
@@ -54,7 +67,8 @@ Interface web permettant d'interagir avec l'API de manière intuitive et convivi
 
 Avant de commencer, assurez-vous d'avoir installé :
 
-- [PHP](https://www.php.net/downloads) >= 8.0
+- [PHP](https://www.php.net/downloads) >= 8.0 avec les extensions SQLite3
+- [Composer](https://getcomposer.org/) pour la gestion des dépendances PHP
 - [Node.js](https://nodejs.org/) >= 18.0
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
 - [Git](https://git-scm.com/)
@@ -126,9 +140,17 @@ L'application cliente sera accessible sur `http://localhost:3000`
 API-Bachelor3-Ynov/
 │
 ├── API-php/                    # Backend PHP
-│   ├── routes/                 # Définition des routes API
-│   ├── controllers/            # Logique métier
-│   └── models/                 # Modèles de données
+│   ├── src/
+│   │   ├── Controllers/       # Contrôleurs API (HealthController, SachaController)
+│   │   ├── Database/          # Gestion de la base de données SQLite
+│   │   └── Services/          # Services (ResponseService)
+│   ├── data/                  # Base de données SQLite
+│   ├── public/                # Fonctions publiques
+│   ├── vendor/                # Dépendances Composer
+│   ├── routes.php             # Définition des routes API
+│   ├── index.php              # Point d'entrée
+│   ├── composer.json          # Configuration Composer
+│   └── routes.md              # Documentation des routes
 │
 ├── CLIENT-NextJS/              # Frontend Next.js
 │   ├── src/
