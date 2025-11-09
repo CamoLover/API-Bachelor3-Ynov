@@ -1,1 +1,3 @@
 <?php 
+// Public functions file
+?>
