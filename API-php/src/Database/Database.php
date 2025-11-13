@@ -37,6 +37,7 @@ class Database
 
     private function initSchema()
     {
+        // Table sacha_posts
         $sql = "
             CREATE TABLE IF NOT EXISTS sacha_posts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,6 +49,20 @@ class Database
         ";
         
         $this->connection->exec($sql);
+
+        // Table skills
+        $sqlSkills = "
+            CREATE TABLE IF NOT EXISTS skills (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(255) NOT NULL,
+                level VARCHAR(50) NOT NULL,
+                category VARCHAR(100) NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ";
+        
+        $this->connection->exec($sqlSkills);
     }
 
     public function testConnection()
