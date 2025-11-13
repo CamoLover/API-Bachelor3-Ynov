@@ -48,7 +48,7 @@ Router::get('/health', function() {
 Router::get('/sacha', function() {
     setCorsHeaders();
     $controller = new SachaController();
-    $controller->index();
+    return $controller->index();
 });
 
 Router::post('/sacha/create', function() {
