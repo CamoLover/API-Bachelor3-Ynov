@@ -23,10 +23,18 @@ class ResponseService
         ];
 
         if ($data !== null) {
-            $response['data'] = $data;
+            // Clean up UTF-8 encoding issues
+            $response['data'] = self::cleanEncoding($data);
         }
 
-        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $json = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        if ($json === false) {
+            // Try with invalid UTF-8 replaced
+            $response = self::cleanEncoding($response);
+            $json = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        }
+        
+        echo $json;
         exit;
     }
 
@@ -50,5 +58,16 @@ class ResponseService
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         exit;
+    }
+    
+    private static function cleanEncoding($data)
+    {
+        if (is_array($data)) {
+            return array_map([self::class, 'cleanEncoding'], $data);
+        } elseif (is_string($data)) {
+            // Remove or replace invalid UTF-8 characters
+            return mb_convert_encoding($data, 'UTF-8', 'UTF-8');
+        }
+        return $data;
     }
 }
