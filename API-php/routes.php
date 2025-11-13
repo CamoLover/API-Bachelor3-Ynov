@@ -6,9 +6,11 @@ require_once __DIR__ . '/src/Services/ResponseService.php';
 require_once __DIR__ . '/src/Database/Database.php';
 require_once __DIR__ . '/src/Controllers/HealthController.php';
 require_once __DIR__ . '/src/Controllers/SachaController.php';
+require_once __DIR__ . '/src/Controllers/SkillsController.php';
 
 use App\Controllers\HealthController;
 use App\Controllers\SachaController;
+use App\Controllers\SkillsController;
 
 // Maintenance mode flag - 0 for normal operation, 1 for maintenance mode
 define('MAINTENANCE_MODE', 0);
@@ -68,6 +70,37 @@ Router::put('/sacha/update/{id}', function($id) {
 Router::delete('/sacha/delete/{id}', function($id) {
     setCorsHeaders();
     $controller = new SachaController();
+    return $controller->delete($id);
+});
+
+// Skills endpoints
+Router::get('/skills', function() {
+    setCorsHeaders();
+    $controller = new SkillsController();
+    return $controller->index();
+});
+
+Router::post('/skills/create', function() {
+    setCorsHeaders();
+    $controller = new SkillsController();
+    return $controller->create();
+});
+
+Router::get('/skills/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new SkillsController();
+    return $controller->show($id);
+});
+
+Router::put('/skills/update/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new SkillsController();
+    return $controller->update($id);
+});
+
+Router::delete('/skills/delete/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new SkillsController();
     return $controller->delete($id);
 });
 
