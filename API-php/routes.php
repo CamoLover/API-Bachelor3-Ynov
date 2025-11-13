@@ -106,11 +106,65 @@ Router::delete('/skills/delete/{id}', function($id) {
     return $controller->delete($id);
 });
 
-// Hobbies endpoints - CREATE
+// Hobbies endpoints
+Router::get('/hobbies', function() {
+    setCorsHeaders();
+    $controller = new HobbyController();
+    return $controller->index();
+});
+
+Router::get('/hobbies/test', function() {
+    setCorsHeaders();
+    return json_encode([
+        'status' => 'succès',
+        'message' => 'Test GET endpoint hobbies fonctionne !',
+        'data' => [
+            'GET' => $_GET,
+            'POST' => $_POST,
+            'php_input' => file_get_contents('php://input')
+        ]
+    ]);
+});
+
+Router::post('/hobbies/test', function() {
+    setCorsHeaders();
+    $phpInput = file_get_contents('php://input');
+    $decoded = json_decode($phpInput, true);
+    return json_encode([
+        'status' => 'succès',
+        'message' => 'Test POST endpoint hobbies fonctionne !',
+        'data' => [
+            'GET' => $_GET,
+            'POST' => $_POST,
+            'php_input_raw' => $phpInput,
+            'php_input_decoded' => $decoded,
+            'input_name' => \input('name', 'NOT_FOUND'),
+            'input_description' => \input('description', 'NOT_FOUND')
+        ]
+    ], JSON_UNESCAPED_UNICODE);
+});
 Router::post('/hobbies/create', function() {
     setCorsHeaders();
     $controller = new HobbyController();
     return $controller->create();
+});
+
+Router::get('/hobbies/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new HobbyController();
+    return $controller->show($id);
+});
+
+Router::put('/hobbies/update/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new HobbyController();
+    return $controller->update($id);
+});
+
+Router::delete('/hobbies/delete/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new HobbyController();
+    return $controller->delete($id);
 });
 
 // Maintenance route
