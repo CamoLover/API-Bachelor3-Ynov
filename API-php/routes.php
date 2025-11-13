@@ -7,10 +7,12 @@ require_once __DIR__ . '/src/Database/Database.php';
 require_once __DIR__ . '/src/Controllers/HealthController.php';
 require_once __DIR__ . '/src/Controllers/SachaController.php';
 require_once __DIR__ . '/src/Controllers/SkillsController.php';
+require_once __DIR__ . '/src/Controllers/HobbyController.php';
 
 use App\Controllers\HealthController;
 use App\Controllers\SachaController;
 use App\Controllers\SkillsController;
+use App\Controllers\HobbyController;
 
 // Maintenance mode flag - 0 for normal operation, 1 for maintenance mode
 define('MAINTENANCE_MODE', 0);
@@ -102,6 +104,13 @@ Router::delete('/skills/delete/{id}', function($id) {
     setCorsHeaders();
     $controller = new SkillsController();
     return $controller->delete($id);
+});
+
+// Hobbies endpoints - CREATE
+Router::post('/hobbies/create', function() {
+    setCorsHeaders();
+    $controller = new HobbyController();
+    return $controller->create();
 });
 
 // Maintenance route
