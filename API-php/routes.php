@@ -66,19 +66,19 @@ Router::get('/name/random', function() {
     return $controller->random();
 });
 
-Router::post('/name', function() {
+Router::post('/name/create', function() {
     setCorsHeaders();
     $controller = new NameController();
     return $controller->create();
 });
 
-Router::put('/name/{id}', function($id) {
+Router::put('/name/update/{id}', function($id) {
     setCorsHeaders();
     $controller = new NameController();
     return $controller->update($id);
 });
 
-Router::delete('/name/{id}', function($id) {
+Router::delete('/name/delete/{id}', function($id) {
     setCorsHeaders();
     $controller = new NameController();
     return $controller->delete($id);
