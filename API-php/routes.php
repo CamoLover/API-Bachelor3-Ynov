@@ -8,11 +8,13 @@ require_once __DIR__ . '/src/Controllers/HealthController.php';
 require_once __DIR__ . '/src/Controllers/SachaController.php';
 require_once __DIR__ . '/src/Controllers/SkillsController.php';
 require_once __DIR__ . '/src/Controllers/HobbyController.php';
+require_once __DIR__ . '/src/Controllers/NameController.php';
 
 use App\Controllers\HealthController;
 use App\Controllers\SachaController;
 use App\Controllers\SkillsController;
 use App\Controllers\HobbyController;
+use App\Controllers\NameController;
 
 // Maintenance mode flag - 0 for normal operation, 1 for maintenance mode
 define('MAINTENANCE_MODE', 0);
@@ -49,6 +51,19 @@ Router::get('/sacha', function() {
     setCorsHeaders();
     $controller = new SachaController();
     return $controller->index();
+});
+
+// Names demo endpoints
+Router::get('/names', function() {
+    setCorsHeaders();
+    $controller = new NameController();
+    return $controller->list();
+});
+
+Router::get('/names/random', function() {
+    setCorsHeaders();
+    $controller = new NameController();
+    return $controller->random();
 });
 
 Router::post('/sacha/create', function() {
