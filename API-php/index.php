@@ -1,16 +1,13 @@
 <?php
 
-require_once './vendor/autoload.php'; // Load Composer dependencies
-require_once './public/function.php';
-use Pecee\SimpleRouter\SimpleRouter as Router;
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+ini_set('display_errors', 1);
 
-// Create data directory for SQLite database
-if (!file_exists('./data')) {
-    mkdir('./data', 0755, true);
-}
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/pecee/simple-router/helpers.php';
+require_once __DIR__ . '/routes.php';
 
-// Include the routes file
-require_once './routes.php';
+use Pecee\SimpleRouter\SimpleRouter;
 
-// Start the router
-Router::start();
+SimpleRouter::start();
+

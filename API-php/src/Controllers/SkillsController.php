@@ -94,9 +94,9 @@ class SkillsController
             }
 
             // Validation du level
-            $validLevels = ['Débutant', 'Intermédiaire', 'Avancé', 'Expert'];
+            $validLevels = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
             if (!in_array($level, $validLevels)) {
-                return ResponseService::error('Le niveau doit être: Débutant, Intermédiaire, Avancé ou Expert', 400);
+                return ResponseService::error('Le niveau doit être: Beginner, Intermediate, Advanced ou Expert', 400);
             }
 
             // Validation de la catégorie
@@ -153,9 +153,9 @@ class SkillsController
 
             // Validation du level si fourni
             if (isset($input['level'])) {
-                $validLevels = ['Débutant', 'Intermédiaire', 'Avancé', 'Expert'];
+                $validLevels = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
                 if (!in_array($level, $validLevels)) {
-                    return ResponseService::error('Le niveau doit être: Débutant, Intermédiaire, Avancé ou Expert', 400);
+                    return ResponseService::error('Le niveau doit être: Beginner, Intermediate, Advanced ou Expert', 400);
                 }
             }
 
