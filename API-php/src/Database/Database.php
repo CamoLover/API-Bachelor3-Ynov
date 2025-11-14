@@ -78,6 +78,18 @@ class Database
         ";
         
         $this->connection->exec($sqlHobbies);
+
+        // Table names
+        $sqlNames = "
+            CREATE TABLE IF NOT EXISTS names (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(255) NOT NULL UNIQUE,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ";
+        
+        $this->connection->exec($sqlNames);
     }
 
     public function testConnection()

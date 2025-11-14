@@ -30,8 +30,10 @@ function maintenanceCheck() {
 function setCorsHeaders() {
     header('Content-Type: application/json; charset=utf-8');
     header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    header('Access-Control-Allow-Credentials: false');
+    header('Access-Control-Max-Age: 86400');
     
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
         http_response_code(200);
@@ -53,17 +55,35 @@ Router::get('/sacha', function() {
     return $controller->index();
 });
 
-// Names demo endpoints
-Router::get('/names', function() {
+// Names endpoints
+Router::get('/name', function() {
     setCorsHeaders();
     $controller = new NameController();
     return $controller->list();
 });
 
-Router::get('/names/random', function() {
+Router::get('/name/random', function() {
     setCorsHeaders();
     $controller = new NameController();
     return $controller->random();
+});
+
+Router::post('/name/create', function() {
+    setCorsHeaders();
+    $controller = new NameController();
+    return $controller->create();
+});
+
+Router::put('/name/update/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new NameController();
+    return $controller->update($id);
+});
+
+Router::delete('/name/delete/{id}', function($id) {
+    setCorsHeaders();
+    $controller = new NameController();
+    return $controller->delete($id);
 });
 
 Router::post('/sacha/create', function() {
