@@ -311,15 +311,35 @@ export default function Home() {
                           <p className="text-gray-400">Aucun élément.</p>
                         )}
                         {!loading && !error && items.map((item) => (
-                          <div key={item.id ?? JSON.stringify(item)} className="flex items-center justify-between bg-gray-800/40 border border-gray-700/40 rounded-md px-3 py-2">
-                            <button onClick={() => openDetails(item)} className="text-left text-gray-200 hover:text-white truncate">
+                          <div
+                            key={item.id ?? JSON.stringify(item)}
+                            className="flex items-center justify-between bg-gray-800/40 border border-gray-700/40 rounded-md px-3 py-2 cursor-pointer hover:bg-gray-700/40 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => openDetails(item)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                openDetails(item);
+                              }
+                            }}
+                          >
+                            <div className="text-left text-gray-200 hover:text-white truncate pr-3">
                               {titleForItem(item)}
-                            </button>
+                            </div>
                             <div className="flex items-center gap-2">
-                              <button onClick={() => openEdit(item)} title="Modifier" className="text-yellow-400 hover:text-yellow-300">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); openEdit(item); }}
+                                title="Modifier"
+                                className="text-yellow-400 hover:text-yellow-300"
+                              >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5h2m-9 7h6m4 0h6M5 19h14M7 12l10-10 4 4-10 10H7v-4z" /></svg>
                               </button>
-                              <button onClick={() => openDelete(item)} title="Supprimer" className="text-red-400 hover:text-red-300">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); openDelete(item); }}
+                                title="Supprimer"
+                                className="text-red-400 hover:text-red-300"
+                              >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a2 2 0 012-2h4a2 2 0 012 2m-8 0H5m11 0h3" /></svg>
                               </button>
                             </div>
@@ -604,7 +624,130 @@ export default function Home() {
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                       </button>
                     </div>
-                    <pre className="text-gray-200 text-sm whitespace-pre-wrap break-words bg-gray-900/40 p-3 rounded-md max-h-[60vh] overflow-auto">{JSON.stringify(selectedItem, null, 2)}</pre>
+                    <div className="space-y-4 max-h-[60vh] overflow-auto">
+                      {activeEndpoint === 'sacha' && (
+                        <>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Auteur</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.author ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">ID</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.id ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Créé le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.created_at ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Mis à jour le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.updated_at ?? '—'}</div>
+                            </div>
+                          </div>
+                          <div className="bg-gray-900/40 border border-gray-700/40 rounded-md p-3">
+                            <div className="text-xs text-gray-400 mb-1">Message</div>
+                            <div className="text-sm text-gray-100 whitespace-pre-wrap">{selectedItem.text ?? '—'}</div>
+                          </div>
+                        </>
+                      )}
+
+                      {activeEndpoint === 'skills' && (
+                        <>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Nom</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.name ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Niveau</div>
+                              <div className="text-sm mt-1">
+                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${
+                                  selectedItem.level === 'Expert' ? 'bg-purple-500/15 text-purple-300 border-purple-400/30' :
+                                  selectedItem.level === 'Advanced' ? 'bg-blue-500/15 text-blue-300 border-blue-400/30' :
+                                  selectedItem.level === 'Intermediate' ? 'bg-green-500/15 text-green-300 border-green-400/30' :
+                                  'bg-gray-500/15 text-gray-300 border-gray-400/30'
+                                }`}>{selectedItem.level ?? '—'}</span>
+                              </div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3 sm:col-span-2">
+                              <div className="text-xs text-gray-400">Catégorie</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.category ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Créé le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.created_at ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Mis à jour le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.updated_at ?? '—'}</div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {activeEndpoint === 'hobbies' && (
+                        <>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Nom</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.name ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Niveau</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.level ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Depuis</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.since ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">ID</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.id ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Créé le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.created_at ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Mis à jour le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.updated_at ?? '—'}</div>
+                            </div>
+                          </div>
+                          <div className="bg-gray-900/40 border border-gray-700/40 rounded-md p-3">
+                            <div className="text-xs text-gray-400 mb-1">Description</div>
+                            <div className="text-sm text-gray-100 whitespace-pre-wrap">{selectedItem.description ?? '—'}</div>
+                          </div>
+                        </>
+                      )}
+
+                      {activeEndpoint === 'name' && (
+                        <>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3 sm:col-span-2">
+                              <div className="text-xs text-gray-400">Surnom</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.name ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">ID</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.id ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Créé le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.created_at ?? '—'}</div>
+                            </div>
+                            <div className="bg-gray-800/40 border border-gray-700/40 rounded-md p-3">
+                              <div className="text-xs text-gray-400">Mis à jour le</div>
+                              <div className="text-sm text-gray-200 mt-1">{selectedItem.updated_at ?? '—'}</div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {!activeEndpoint && (
+                        <pre className="text-gray-200 text-sm whitespace-pre-wrap break-words bg-gray-900/40 p-3 rounded-md">{JSON.stringify(selectedItem, null, 2)}</pre>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
