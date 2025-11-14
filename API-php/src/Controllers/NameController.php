@@ -161,7 +161,7 @@ class NameController
             }
 
             return ResponseService::success(
-                null,
+                ['id' => $id],
                 'Prénom supprimé avec succès',
                 200
             );
