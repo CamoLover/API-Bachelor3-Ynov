@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen w-screen`}
       >
-        <div className="fixed inset-0 bg-[url('/sacha-background.jpeg')] bg-cover bg-center blur-sm z-0 opacity-30" />
+        <div className="fixed inset-0 bg-[url('/sacha-background.jpeg')] bg-cover bg-center blur-sm z-0" />
         {children}
       </body>
     </html>
