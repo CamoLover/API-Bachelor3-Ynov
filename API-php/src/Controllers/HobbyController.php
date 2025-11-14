@@ -172,7 +172,7 @@ class HobbyController
             $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
             $stmt->execute();
 
-            return ResponseService::success(null, 'Hobby supprimé avec succès', 204);
+            return ResponseService::success(['id' => $id], 'Hobby supprimé avec succès', 200);
         } catch (\Exception $e) {
             return ResponseService::error('Erreur lors de la suppression du hobby: ' . $e->getMessage(), 500);
         }

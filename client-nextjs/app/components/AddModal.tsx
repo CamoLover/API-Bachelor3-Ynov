@@ -8,9 +8,10 @@ interface AddModalProps {
   endpoint: string;
   children: React.ReactNode;
   endpointType?: 'sacha' | 'skills' | 'hobbies' | 'name';
+  isEditing?: boolean;
 }
 
-const AddModal: FC<AddModalProps> = ({ isOpen, onClose, endpoint, endpointType, children }) => {
+const AddModal: FC<AddModalProps> = ({ isOpen, onClose, endpoint, endpointType, isEditing, children }) => {
   if (!isOpen) return null;
 
   return (
@@ -22,10 +23,13 @@ const AddModal: FC<AddModalProps> = ({ isOpen, onClose, endpoint, endpointType, 
       />
       
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-md p-6 rounded-2xl bg-gray-800 border border-purple-500/30 shadow-xl">
+      <div className="relative z-10 w-full max-w-md mx-4 p-6 rounded-2xl bg-gray-800 border border-purple-500/30 shadow-xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold text-white">
-            {endpointType === 'sacha' ? 'Ajouter une appréciation' : `Ajouter un${endpointType === 'hobbies' || endpointType === 'name' ? ' ' : 'e '}${endpoint.toLowerCase()}`}
+            {isEditing ? 
+              (endpointType === 'sacha' ? 'Modifier une appréciation' : `Modifier ${endpointType === 'hobbies' || endpointType === 'name' ? 'le' : 'la'} ${endpoint.toLowerCase()}`)
+              : (endpointType === 'sacha' ? 'Ajouter une appréciation' : `Ajouter un${endpointType === 'hobbies' || endpointType === 'name' ? ' ' : 'e '}${endpoint.toLowerCase()}`)
+            }
           </h3>
           <button
             onClick={onClose}
